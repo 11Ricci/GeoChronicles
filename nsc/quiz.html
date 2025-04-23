@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Phanerozoic Eon Trivia</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #ccae8f;
+      color: #333;
+      max-width: 800px;
+      margin: 40px auto;
+      padding: 20px;
+    }
+    h1 {
+      text-align: center;
+      color: #1a1a1a;
+    }
+    .question {
+      margin-bottom: 30px;
+    }
+    .options label {
+      display: block;
+      margin: 8px 0;
+      cursor: pointer;
+    }
+    button, #next-page-btn {
+      cursor: pointer;
+      border: none;
+      border-radius: 6px;
+    }
+    button {
+      background: #020202;
+      color: white;
+      padding: 8px 12px;
+      margin: 5px;
+    }
+    button:hover { opacity: 0.9; }
+    #next-set-btn {
+      display: none;
+      margin: 20px auto;
+      background: #444;
+      color: white;
+      padding: 12px 20px;
+      font-size: 1.1rem;
+    }
+    #final-score {
+      text-align: center;
+      font-size: 1.4rem;
+      font-weight: bold;
+      margin-top: 30px;
+    }
+    #results-summary {
+      margin-top: 30px;
+      background: #fff;
+      padding: 20px;
+      border-radius: 8px;
+    }
+    #results-summary h2 {
+      margin-top: 0;
+    }
+    #results-summary p {
+      margin: 8px 0;
+    }
+    #next-page-btn {
+      display: none;
+      margin: 30px auto 0;
+      background-color: #4caf50;
+      color: white;
+      padding: 12px 24px;
+      font-weight: bold;
+      width: fit-content;
+    }
+    #next-page-btn:hover {
+      background-color: #45a049;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>Paleozoic Era Trivia</h1>
+
+  <div id="quiz"></div>
+  <button id="next-set-btn" onclick="nextBatch()">Next Set</button>
+
+  <div id="final-score"></div>
+  <div id="results-summary"></div>
+
+  <button id="next-page-btn" onclick="location.href='others.html'">
+    Go to Next Page →
+  </button>
+
+  <script>
+    const allQuestions = [
+      { question: "Compare the types of materials found in the Paleozoic, Mesozoic, and Cenozoic Eras. Which is correctly matched?", options: ["A. Paleozoic – Chalk; Mesozoic – Limestone; Cenozoic – Iron ore","B. Paleozoic – Coal and trilobite fossils; Mesozoic – Chalk and dinosaur fossils; Cenozoic – Glacial deposits and mammal fossils","C. Paleozoic – Ice cores and glacial gravel; Mesozoic – Oil shale; Cenozoic – Brachiopods","D. Paleozoic – Flowering plants; Mesozoic – Hominins; Cenozoic – Trilobites"], answer: "B. Paleozoic – Coal and trilobite fossils; Mesozoic – Chalk and dinosaur fossils; Cenozoic – Glacial deposits and mammal fossils" },
+      { question: "What significant event ended the Paleozoic Era?", options: ["A. Formation of the Atlantic Ocean","B. The Cambrian Explosion","C. The Permian mass extinction","D. The rise of flowering plants"], answer: "C. The Permian mass extinction" },
+      { question: "Which materials and fossils are commonly associated with the Cenozoic Era?", options: ["A. Dinosaur fossils and chalk","B. Trilobite fossils and shale","C. Glacial deposits, early human fossils, and sedimentary rocks","D. Reef limestone and marine invertebrates"], answer: "C. Glacial deposits, early human fossils, and sedimentary rocks" },
+      { question: 'Which of the following periods is known as the "Age of Fishes"?', options: ["A. Cambrian","B. Devonian","C. Silurian","D. Ordovician"], answer: "B. Devonian" },
+      { question: "Which of the following best describes the Mesozoic Era?", options: ["A. Age of Mammals","B. Age of Insects","C. Age of Dinosaurs and reptiles","D. Age of Humans"], answer: "C. Age of Dinosaurs and reptiles" },
+      { question: "What major geological structure formed during the Permian Period?", options: ["A. The supercontinent Pangaea","B. The Himalayan mountain range","C. The Atlantic Ocean","D. The Great Rift Valley"], answer: "A. The supercontinent Pangaea" },
+      { question: "What is the correct order of geologic eras from oldest to most recent?", options: ["A. Mesozoic, paleozoic, cenozoic","B. Paleozoic, mesozoic, cenozoic","C. Cenozoic, paleozoic, mesozoic","D. Precambrian, paleozoic, cenozoic"], answer: "B. Paleozoic, mesozoic, cenozoic" },
+      { question: "Which epoch are we currently living in?", options: ["A. Pleistocene","B. Holocene","C. Miocene","D. Paleocene"], answer: "B. Holocene" },
+      { question: "What happened at the end of the Paleozoic?", options: ["A. A mass extinction","B. First birds","C. Ice Age","D. First Dinosaurs"], answer: "A. A mass extinction" },
+      { question: "Which supercontinentformed during the Cambrian?", options: ["A. Laurasia","B. Pannotia","C. Pangaea","D. Gondwana"], answer: "D. Gondwana" }
+    ];
+
+    let currentIndex = 0;
+    let score = 0;
+    const batchSizes = [3,3,4];
+    let currentBatch = [];
+    const userAnswers = [];
+
+    function showNextBatch() {
+      const quizDiv = document.getElementById("quiz");
+      quizDiv.innerHTML = "";
+      document.getElementById("next-set-btn").style.display = "none";
+
+      // Decide batch size (4 on last, 3 otherwise)
+      const size = (currentIndex >= 6) ? 4 : 3;
+      currentBatch = allQuestions.slice(currentIndex, currentIndex + size);
+
+      currentBatch.forEach((q,i) => {
+        const block = document.createElement("div");
+        block.className = "question";
+
+        block.innerHTML = `<p><strong>${currentIndex + i + 1}. ${q.question}</strong></p>
+          <div class="options">
+            ${q.options.map(opt =>
+              `<label>
+                 <input type="radio" name="q${currentIndex+i}" value="${opt}" onchange="tryEnableNext()">
+                 ${opt}
+               </label>`).join("")}
+          </div>`;
+
+        quizDiv.appendChild(block);
+      });
+    }
+
+    function tryEnableNext() {
+      // Check if all in this batch have a selection
+      const answered = currentBatch.every((_,i) =>
+        document.querySelector(`input[name="q${currentIndex+i}"]:checked`)
+      );
+      if (answered) {
+        document.getElementById("next-set-btn").style.display = "inline-block";
+      }
+    }
+
+    function nextBatch() {
+      // Record answers & score
+      currentBatch.forEach((q,i) => {
+        const sel = document.querySelector(`input[name="q${currentIndex+i}"]:checked`).value;
+        userAnswers.push(sel);
+        if (sel === q.answer) score++;
+      });
+
+      currentIndex += currentBatch.length;
+      document.getElementById("next-set-btn").style.display = "none";
+
+      if (currentIndex < allQuestions.length) {
+        showNextBatch();
+      } else {
+        showResults();
+      }
+    }
+
+    function showResults() {
+      // Clear quiz area
+      document.getElementById("quiz").innerHTML = "";
+      document.getElementById("final-score")
+              .textContent = `🎉 You finished! Score: ${score}/${allQuestions.length}`;
+
+      // Build summary
+      const sumDiv = document.getElementById("results-summary");
+      sumDiv.innerHTML = "<h2>Your Answers</h2>" +
+        allQuestions.map((q,i) =>
+          `<p>${i+1}. ${q.question}<br>
+             Your answer: <strong>${userAnswers[i]}</strong><br>
+             Correct answer: <strong>${q.answer}</strong>
+           </p>`
+        ).join("");
+
+      // Show Next Page button
+      document.getElementById("next-page-btn").style.display = "block";
+    }
+
+    // Start
+    showNextBatch();
+  </script>
+
+</body>
+</html>

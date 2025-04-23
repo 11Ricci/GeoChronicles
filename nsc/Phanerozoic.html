@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Phanerozoic Eon</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-direction: column;
+      background-color: #ccae8f;
+      min-height: 100vh;
+      margin: 0;
+      padding-bottom: 60px; /* make space for back link */
+    }
+
+    #reveal-btn {
+      font-size: 2rem;
+      font-weight: bold;
+      color: #020202;
+      cursor: pointer;
+      border: none;
+      background: none;
+    }
+
+    #reveal-btn:hover {
+      text-decoration: underline;
+    }
+
+    #dropdown-content {
+      display: none;
+      margin-top: 20px;
+      background: #ccae8f;
+      padding: 20px;
+      border-radius: 10px;
+      width: 80%;
+      text-align: center;
+      overflow: hidden;
+      height: 0;
+      opacity: 0;
+      transition: height 0.3s ease, opacity 0.3s ease;
+    }
+
+    #dropdown-content ul {
+  display: flex;
+  justify-content: center;
+  padding: 0;
+  flex-wrap: nowrap; /* prevent wrapping */
+  gap: 20px;
+}
+
+#dropdown-content li {
+  list-style-type: none;
+  flex: 1 1 0; /* allow shrinking */
+  min-width: 0; /* prevent overflow */
+}
+
+    .element-link {
+      font-size: 1.5rem;
+      font-weight: bold;
+      color: #020202;
+      text-decoration: none;
+      display: inline-block;
+      margin-bottom: 5px;
+    }
+
+    .element-link:hover {
+      text-decoration: underline;
+    }
+
+    .dropdown-text {
+      background-color: #ebe6e1;
+      padding: 15px;
+      margin-top: 10px;
+      border: 2px solid #00acc1;
+      border-radius: 8px;
+      font-size: 1rem;
+      color: #333;
+      text-align: left;
+    }
+
+#back-link {
+  display: none;
+  position: fixed;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 1.2rem;
+  color: #000; /* ← make it black */
+  text-decoration: none;
+  font-weight: bold;
+  z-index: 999;
+}
+
+#back-link:hover {
+  text-decoration: underline;
+  color: #222; /* optional: darker gray on hover */
+}
+
+
+  </style>
+</head>
+<body>
+
+  <button id="reveal-btn">Phanerozoic Eon</button>
+
+  <div id="dropdown-content">
+    <ul>
+      <li>
+        <a href="paleozoic.html" class="element-link">Paleozoic</a>
+        <div class="dropdown-text">
+          Known for the Cambrian Explosion, this era saw the rise of diverse marine life, including trilobites and brachiopods. Later periods introduced land plants, amphibians, insects, and reptiles. It ended with the Permian mass extinction. At the same time, Pangaea began forming as continents collided. Shallow seas covered much land, and coal swamps were prevalent during the Carboniferous period. Mountain-building events shaped regions like the Appalachians.
+        </div>
+      </li>
+      <li>
+        <a href="mesozoic.html" class="element-link">Mesozoic</a>
+        <div class="dropdown-text">
+          Often called the "Age of Dinosaurs," this era featured reptiles dominating land and sea. The first birds and mammals appeared, alongside flowering plants in the Cretaceous period. It ended with a mass extinction likely caused by an asteroid impact. During this time, Pangaea broke apart into continents. The Atlantic Ocean formed, and mountain ranges like the Rockies emerged. Climate was warmer than today.
+        </div>
+      </li>
+      <li>
+        <a href="cenozoic.html" class="element-link">Cenozoic</a>
+        <div class="dropdown-text">
+          Mammals diversified after the dinosaurs' extinction. Primates evolved, leading to humans during the Quaternary period. Modern ecosystems developed, including grasslands and forests. Furthermore, continents reached their current positions. Ice ages occurred during the Quaternary, shaping landscapes like the Great Lakes and Grand Canyon. Mountain ranges like the Himalayas formed due to tectonic activity.
+        </div>
+      </li>
+    </ul>
+  </div>
+
+  <!-- Back to Homepage Link -->
+  <a href="homepage.html" id="back-link">← Back to Homepage</a>
+
+  <script>
+    const button = document.getElementById("reveal-btn");
+    const content = document.getElementById("dropdown-content");
+    const backLink = document.getElementById("back-link");
+
+    button.addEventListener("click", () => {
+      if (content.style.display === "none" || content.style.display === "") {
+        content.style.display = "block";
+        backLink.style.display = "block"; // Show the back link
+        setTimeout(() => {
+          content.style.height = "auto";
+          content.style.opacity = "1";
+        }, 10);
+      } else {
+        content.style.height = "0";
+        content.style.opacity = "0";
+        backLink.style.display = "none"; // Hide the back link
+        setTimeout(() => {
+          content.style.display = "none";
+        }, 300);
+      }
+    });
+  </script>
+
+</body>
+</html>
